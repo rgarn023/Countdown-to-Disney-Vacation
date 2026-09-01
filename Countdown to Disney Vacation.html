@@ -15,6 +15,7 @@
   --glass2:rgba(255,255,255,.18);
 }
 *{box-sizing:border-box}
+html,body{height:100%}
 body{
   margin:0;
   min-height:100vh;
@@ -26,6 +27,45 @@ body{
     linear-gradient(160deg,var(--bg2),var(--bg1) 62%);
   overflow-x:hidden;
 }
+.launch-screen{
+  position:fixed;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:24px;
+  z-index:50;
+  background:
+    radial-gradient(circle at 50% 35%, rgba(255,217,120,.13), transparent 24%),
+    linear-gradient(160deg,var(--bg2),var(--bg1) 62%);
+}
+.launch-inner{
+  text-align:center;
+  width:min(420px,100%);
+}
+.launch-title{
+  margin:0 0 12px;
+  font-size:clamp(2.2rem,10vw,4rem);
+  line-height:1;
+}
+.launch-subtitle{
+  margin:0 0 26px;
+  font-size:1rem;
+  opacity:.86;
+}
+.start-btn{
+  appearance:none;
+  border:0;
+  border-radius:999px;
+  padding:16px 26px;
+  min-height:52px;
+  font-size:1.05rem;
+  font-weight:800;
+  color:#1c2440;
+  background:var(--gold);
+  box-shadow:0 10px 28px rgba(0,0,0,.28);
+  cursor:pointer;
+}
 .wrap{
   width:min(920px,100%);
   min-height:100vh;
@@ -35,6 +75,16 @@ body{
   flex-direction:column;
   justify-content:center;
   gap:20px;
+  opacity:0;
+  visibility:hidden;
+  transition:opacity .45s ease;
+}
+body.started .wrap{
+  opacity:1;
+  visibility:visible;
+}
+body.started .launch-screen{
+  display:none;
 }
 .hero{text-align:center}
 .eyebrow{letter-spacing:.22em;text-transform:uppercase;font-size:.78rem;opacity:.78}
@@ -50,13 +100,7 @@ h1{margin:8px 0 0;font-size:clamp(2.3rem,8vw,5.6rem);line-height:.95}
 }
 .countdown{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
 .unit{background:var(--glass2);border-radius:20px;padding:20px 8px;text-align:center}
-.num{
-  display:block;
-  font-size:clamp(2.1rem,8vw,4.2rem);
-  font-weight:800;
-  color:var(--gold);
-  font-variant-numeric:tabular-nums;
-}
+.num{display:block;font-size:clamp(2.1rem,8vw,4.2rem);font-weight:800;color:var(--gold);font-variant-numeric:tabular-nums}
 .label{display:block;margin-top:8px;font-size:.76rem;text-transform:uppercase;letter-spacing:.14em;opacity:.78}
 .dates,.actions,.audio-actions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
 .dates{margin-top:15px}
@@ -85,21 +129,8 @@ button{
   border:1px solid rgba(255,255,255,.10);
   text-align:center;
 }
-.now-label{
-  font-size:.72rem;
-  text-transform:uppercase;
-  letter-spacing:.16em;
-  opacity:.62;
-}
-.now-title{
-  margin:6px auto 12px;
-  max-width:650px;
-  font-size:1rem;
-  font-weight:800;
-  line-height:1.35;
-  color:var(--gold);
-  overflow-wrap:anywhere;
-}
+.now-label{font-size:.72rem;text-transform:uppercase;letter-spacing:.16em;opacity:.62}
+.now-title{margin:6px auto 12px;max-width:650px;font-size:1rem;font-weight:800;line-height:1.35;color:var(--gold);overflow-wrap:anywhere}
 .audio-note{margin-top:10px;font-size:.76rem;opacity:.56}
 .note{text-align:center;font-size:.82rem;opacity:.65}
 #ytPlayer{
@@ -111,6 +142,41 @@ button{
   opacity:0;
   pointer-events:none;
 }
+.fireworks{
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  overflow:hidden;
+  z-index:40;
+}
+.firework{
+  position:absolute;
+  width:10px;
+  height:10px;
+}
+.firework::before{
+  content:"";
+  position:absolute;
+  inset:-35px;
+  border-radius:50%;
+  background:
+    radial-gradient(circle, rgba(255,217,120,1) 0 2px, transparent 2.5px),
+    radial-gradient(circle, rgba(255,255,255,.95) 0 1.8px, transparent 2.4px),
+    radial-gradient(circle, rgba(255,145,77,.95) 0 2px, transparent 2.7px),
+    radial-gradient(circle, rgba(126,182,255,.95) 0 2px, transparent 2.7px),
+    radial-gradient(circle, rgba(255,120,200,.95) 0 2px, transparent 2.7px);
+  background-position:
+    50% 0%, 100% 50%, 50% 100%, 0% 50%, 80% 20%;
+  background-repeat:no-repeat;
+  transform:scale(.2);
+  opacity:0;
+  animation:burst 900ms ease-out forwards;
+}
+@keyframes burst{
+  0%{transform:scale(.1);opacity:0}
+  20%{opacity:1}
+  100%{transform:scale(1.15);opacity:0}
+}
 @media(max-width:640px){
   .countdown{grid-template-columns:repeat(2,1fr)}
   .card{padding:14px}
@@ -118,13 +184,20 @@ button{
 </style>
 </head>
 <body>
-<main class="wrap">
+<div class="launch-screen" id="launchScreen">
+  <div class="launch-inner">
+    <h2 class="launch-title">Disney Vacation</h2>
+    <p class="launch-subtitle">Ready to begin the countdown?</p>
+    <button class="start-btn" id="startMagicBtn" type="button">Start the Magic</button>
+  </div>
+</div>
+<div class="fireworks" id="fireworks" aria-hidden="true"></div>
+<main class="wrap" id="appContent">
 <section class="hero">
   <div class="eyebrow">Our Magical Getaway</div>
   <h1>Disney Vacation</h1>
   <p class="subtitle">Counting down to November 22–29, 2026 ✨</p>
 </section>
-
 <section class="card">
   <div class="countdown" aria-live="polite">
     <div class="unit"><span class="num" id="days">0</span><span class="label">Days</span></div>
@@ -132,12 +205,10 @@ button{
     <div class="unit"><span class="num" id="minutes">0</span><span class="label">Minutes</span></div>
     <div class="unit"><span class="num" id="seconds">0</span><span class="label">Seconds</span></div>
   </div>
-
   <div class="dates">
     <span class="pill">Starts: Nov 22, 2026</span>
     <span class="pill">Ends: Nov 29, 2026</span>
   </div>
-
   <div class="castle" aria-hidden="true">
     <svg viewBox="0 0 360 170" xmlns="http://www.w3.org/2000/svg">
       <defs>
@@ -160,34 +231,28 @@ button{
       </g>
     </svg>
   </div>
-
   <div class="status" id="status">The magic is getting closer…</div>
-
   <div class="audio-panel">
     <div class="now-label">Now Playing</div>
     <div class="now-title" id="nowPlaying" aria-live="polite">Loading audio title…</div>
     <div class="audio-actions">
       <button class="primary" id="switchAudioBtn" type="button" disabled>Switch Audio</button>
     </div>
-    <div class="audio-note" id="audioNote">The player is hidden. If autoplay is blocked, tap anywhere once to start the music.</div>
+    <div class="audio-note" id="audioNote">Press Start the Magic to reveal the countdown and begin the music.</div>
   </div>
-
   <div class="actions">
     <button class="primary" id="shareBtn" type="button">Share Countdown</button>
     <button class="secondary" id="copyBtn" type="button">Copy Link</button>
   </div>
 </section>
-
 <div class="note">Countdown is based on Eastern Time.</div>
 </main>
-
 <div id="ytPlayer" aria-hidden="true"></div>
 <script src="https://www.youtube.com/iframe_api"></script>
 <script>
 (function(){
   const start = new Date("2026-11-22T08:00:00-05:00");
   const end = new Date("2026-11-30T00:00:00-05:00");
-
   const d = document.getElementById("days");
   const h = document.getElementById("hours");
   const m = document.getElementById("minutes");
@@ -196,18 +261,30 @@ button{
   const nowPlaying = document.getElementById("nowPlaying");
   const switchAudioBtn = document.getElementById("switchAudioBtn");
   const audioNote = document.getElementById("audioNote");
+  const startMagicBtn = document.getElementById("startMagicBtn");
+  const fireworks = document.getElementById("fireworks");
+
+  const tracks = [
+    { id:"Rwri0GAzlgo" },
+    { id:"_9yyBU1Qq8Q" },
+    { id:"hQAnJIh6p70" }
+  ];
+
+  let currentTrack = 0;
+  let player = null;
+  let playerReady = false;
+  let titlePoll = 0;
+  let pendingStart = false;
 
   function tick(){
     const now = new Date();
     const target = now < start ? start : end;
     const ms = Math.max(0, target - now);
     const total = Math.floor(ms / 1000);
-
     d.textContent = Math.floor(total / 86400);
     h.textContent = String(Math.floor((total % 86400) / 3600)).padStart(2,"0");
     m.textContent = String(Math.floor((total % 3600) / 60)).padStart(2,"0");
     s.textContent = String(total % 60).padStart(2,"0");
-
     if(now < start){
       status.textContent = "The magic is getting closer…";
     }else if(now < end){
@@ -216,6 +293,56 @@ button{
       d.textContent = h.textContent = m.textContent = s.textContent = "0";
       status.textContent = "The vacation may be over, but the memories stay magical. ✨";
     }
+  }
+
+  function updateVideoTitle(){
+    if(!player || !player.getVideoData) return;
+    const data = player.getVideoData();
+    if(data && data.title){
+      nowPlaying.textContent = data.title;
+      titlePoll = 0;
+      return;
+    }
+    if(titlePoll < 12){
+      titlePoll++;
+      setTimeout(updateVideoTitle, 500);
+    }else{
+      nowPlaying.textContent = "Vacation soundtrack";
+    }
+  }
+
+  function startCurrentTrack(){
+    if(!playerReady || !player) {
+      pendingStart = true;
+      return;
+    }
+    try{
+      player.playVideo();
+      audioNote.textContent = "♪ Music enabled · tap Switch Audio to change tracks.";
+      pendingStart = false;
+    }catch(e){
+      pendingStart = true;
+    }
+  }
+
+  function burstAt(x, y, delay){
+    const node = document.createElement("div");
+    node.className = "firework";
+    node.style.left = x + "%";
+    node.style.top = y + "%";
+    node.style.animationDelay = delay + "ms";
+    node.style.transform = "translate(-50%, -50%)";
+    const duration = 950;
+    fireworks.appendChild(node);
+    setTimeout(() => node.remove(), duration + delay + 120);
+  }
+
+  function launchFireworks(){
+    const bursts = [
+      [18, 30, 0], [50, 20, 120], [80, 30, 240], [34, 52, 360], [66, 50, 480], [50, 38, 620]
+    ];
+    bursts.forEach(([x,y,dly]) => burstAt(x,y,dly));
+    setTimeout(() => { fireworks.innerHTML = ""; }, 2200);
   }
 
   tick();
@@ -243,61 +370,37 @@ button{
     }catch(e){}
   });
 
-  const tracks = [
-    { id:"Rwri0GAzlgo" },
-    { id:"_9yyBU1Qq8Q" },
-    { id:"hQAnJIh6p70" }
-  ];
-
-  let currentTrack = 0;
-  let player = null;
-  let playerReady = false;
-  let titlePoll = 0;
-
-  function updateVideoTitle(){
-    if(!player || !player.getVideoData) return;
-    const data = player.getVideoData();
-    if(data && data.title){
-      nowPlaying.textContent = data.title;
-      titlePoll = 0;
-      return;
-    }
-    if(titlePoll < 12){
-      titlePoll++;
-      setTimeout(updateVideoTitle, 500);
-    }else{
-      nowPlaying.textContent = "Vacation soundtrack";
-    }
-  }
-
-  function startCurrentTrack(){
-    if(!playerReady || !player) return;
-    try{
-      player.playVideo();
-      audioNote.textContent = "♪ Music enabled · tap Switch Audio to change tracks.";
-    }catch(e){}
-  }
-
   switchAudioBtn.addEventListener("click", () => {
     if(!playerReady || !player) return;
     currentTrack = (currentTrack + 1) % tracks.length;
     titlePoll = 0;
     nowPlaying.textContent = "Loading audio title…";
     player.loadVideoById(tracks[currentTrack].id);
-    setTimeout(updateVideoTitle, 500);
+    setTimeout(() => {
+      updateVideoTitle();
+      startCurrentTrack();
+    }, 500);
+  });
+
+  startMagicBtn.addEventListener("click", () => {
+    document.body.classList.add("started");
+    launchFireworks();
+    if(location.protocol === "http:" || location.protocol === "https:") {
+      startCurrentTrack();
+    } else {
+      audioNote.textContent = "YouTube background playback requires the hosted version.";
+    }
   });
 
   window.onYouTubeIframeAPIReady = function(){
     if(!(location.protocol === "http:" || location.protocol === "https:")){
       nowPlaying.textContent = "Publish online to load the soundtrack";
-      audioNote.textContent = "YouTube background playback requires the hosted version.";
       return;
     }
-
     player = new YT.Player("ytPlayer", {
       videoId: tracks[currentTrack].id,
       playerVars: {
-        autoplay: 1,
+        autoplay: 0,
         playsinline: 1,
         rel: 0,
         origin: location.origin
@@ -307,14 +410,12 @@ button{
           playerReady = true;
           switchAudioBtn.disabled = false;
           updateVideoTitle();
-          try{ player.playVideo(); }catch(e){}
+          if(pendingStart || document.body.classList.contains("started")){
+            startCurrentTrack();
+          }
         },
         onStateChange: function(event){
-          if(
-            event.data === YT.PlayerState.PLAYING ||
-            event.data === YT.PlayerState.CUED ||
-            event.data === YT.PlayerState.PAUSED
-          ){
+          if(event.data === YT.PlayerState.PLAYING || event.data === YT.PlayerState.CUED || event.data === YT.PlayerState.PAUSED){
             updateVideoTitle();
           }
         },
@@ -324,12 +425,6 @@ button{
       }
     });
   };
-
-  // Mobile browsers may block audible autoplay. The first user interaction
-  // retries playback without showing the video player.
-  window.addEventListener("pointerdown", startCurrentTrack, {once:true});
-  window.addEventListener("touchstart", startCurrentTrack, {once:true});
-  window.addEventListener("keydown", startCurrentTrack, {once:true});
 })();
 </script>
 </body>
