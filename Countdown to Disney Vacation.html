@@ -7,58 +7,35 @@
 <title>Countdown to Disney Vacation</title>
 <style>
 :root{--bg1:#081229;--bg2:#142b5f;--gold:#ffd978;--white:#fff;--glass:rgba(255,255,255,.12);--glass2:rgba(255,255,255,.18)}
-*{box-sizing:border-box}
-body{margin:0;min-height:100vh;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:#fff;background:radial-gradient(circle at 20% 15%,rgba(112,154,255,.28),transparent 28%),radial-gradient(circle at 80% 10%,rgba(255,217,120,.13),transparent 20%),linear-gradient(160deg,var(--bg2),var(--bg1) 62%);overflow-x:hidden}
-.wrap{width:min(920px,100%);min-height:100vh;margin:auto;padding:calc(28px + env(safe-area-inset-top)) 18px calc(34px + env(safe-area-inset-bottom));display:flex;flex-direction:column;justify-content:center;gap:20px}
-.hero{text-align:center}.eyebrow{letter-spacing:.22em;text-transform:uppercase;font-size:.78rem;opacity:.78}h1{margin:8px 0 0;font-size:clamp(2.3rem,8vw,5.6rem);line-height:.95}.subtitle{margin:14px auto 0;font-size:clamp(1rem,3.4vw,1.3rem);opacity:.9}
-.card{background:var(--glass);border:1px solid rgba(255,255,255,.18);border-radius:28px;padding:20px;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
-.countdown{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.unit{background:var(--glass2);border-radius:20px;padding:20px 8px;text-align:center}.num{display:block;font-size:clamp(2.1rem,8vw,4.2rem);font-weight:800;color:var(--gold);font-variant-numeric:tabular-nums}.label{display:block;margin-top:8px;font-size:.76rem;text-transform:uppercase;letter-spacing:.14em;opacity:.78}
-.dates,.actions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}.dates{margin-top:15px}.pill{padding:8px 12px;border-radius:999px;background:rgba(255,255,255,.1)}
-.castle{text-align:center;margin:18px 0 8px}.castle svg{width:min(340px,90%);height:auto}.status{text-align:center;font-weight:700;font-size:1.08rem;margin-top:8px}.actions{margin-top:16px}
-button{appearance:none;border:0;border-radius:999px;padding:12px 16px;font-size:.95rem;font-weight:700}.primary{background:var(--gold);color:#1c2440}.secondary{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.15)}.note{text-align:center;font-size:.82rem;opacity:.65}.audio-hint{margin-top:12px;text-align:center;font-size:.78rem;opacity:.55}
-#ytPlayer{position:fixed;width:1px;height:1px;left:-10000px;top:-10000px;opacity:0;pointer-events:none}
-@media(max-width:640px){.countdown{grid-template-columns:repeat(2,1fr)}.card{padding:14px}}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:#fff;background:radial-gradient(circle at 20% 15%,rgba(112,154,255,.28),transparent 28%),radial-gradient(circle at 80% 10%,rgba(255,217,120,.13),transparent 20%),linear-gradient(160deg,var(--bg2),var(--bg1) 62%);overflow-x:hidden}.wrap{width:min(920px,100%);min-height:100vh;margin:auto;padding:calc(28px + env(safe-area-inset-top)) 18px calc(34px + env(safe-area-inset-bottom));display:flex;flex-direction:column;justify-content:center;gap:20px}.hero{text-align:center}.eyebrow{letter-spacing:.22em;text-transform:uppercase;font-size:.78rem;opacity:.78}h1{margin:8px 0 0;font-size:clamp(2.3rem,8vw,5.6rem);line-height:.95}.subtitle{margin:14px auto 0;font-size:clamp(1rem,3.4vw,1.3rem);opacity:.9}.card{background:var(--glass);border:1px solid rgba(255,255,255,.18);border-radius:28px;padding:20px;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}.countdown{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.unit{background:var(--glass2);border-radius:20px;padding:20px 8px;text-align:center}.num{display:block;font-size:clamp(2.1rem,8vw,4.2rem);font-weight:800;color:var(--gold);font-variant-numeric:tabular-nums}.label{display:block;margin-top:8px;font-size:.76rem;text-transform:uppercase;letter-spacing:.14em;opacity:.78}.dates,.actions,.audio-actions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}.dates{margin-top:15px}.pill{padding:8px 12px;border-radius:999px;background:rgba(255,255,255,.1)}.castle{text-align:center;margin:18px 0 8px}.castle svg{width:min(340px,90%);height:auto}.status{text-align:center;font-weight:700;font-size:1.08rem;margin-top:8px}.actions{margin-top:16px}button{appearance:none;border:0;border-radius:999px;min-height:44px;padding:12px 16px;font-size:.95rem;font-weight:700;cursor:pointer}.primary{background:var(--gold);color:#1c2440}.secondary{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.15)}.audio-panel{margin-top:18px;padding:15px;border-radius:20px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.10);text-align:center}.now-label{font-size:.72rem;text-transform:uppercase;letter-spacing:.16em;opacity:.62}.now-title{margin:6px auto 12px;max-width:650px;font-size:1rem;font-weight:800;line-height:1.35;color:var(--gold);overflow-wrap:anywhere}.audio-note{margin-top:10px;font-size:.76rem;opacity:.56}.note{text-align:center;font-size:.82rem;opacity:.65}#ytPlayer{position:fixed;width:1px;height:1px;left:-10000px;top:-10000px;opacity:0;pointer-events:none}@media(max-width:640px){.countdown{grid-template-columns:repeat(2,1fr)}.card{padding:14px}}
 </style>
 </head>
 <body>
 <main class="wrap">
-<section class="hero">
-<div class="eyebrow">Our Magical Getaway</div>
-<h1>Disney Vacation</h1>
-<p class="subtitle">Counting down to November 22–29, 2026 ✨</p>
-</section>
+<section class="hero"><div class="eyebrow">Our Magical Getaway</div><h1>Disney Vacation</h1><p class="subtitle">Counting down to November 22–29, 2026 ✨</p></section>
 <section class="card">
-<div class="countdown" aria-live="polite">
-<div class="unit"><span class="num" id="days">0</span><span class="label">Days</span></div>
-<div class="unit"><span class="num" id="hours">0</span><span class="label">Hours</span></div>
-<div class="unit"><span class="num" id="minutes">0</span><span class="label">Minutes</span></div>
-<div class="unit"><span class="num" id="seconds">0</span><span class="label">Seconds</span></div>
-</div>
+<div class="countdown" aria-live="polite"><div class="unit"><span class="num" id="days">0</span><span class="label">Days</span></div><div class="unit"><span class="num" id="hours">0</span><span class="label">Hours</span></div><div class="unit"><span class="num" id="minutes">0</span><span class="label">Minutes</span></div><div class="unit"><span class="num" id="seconds">0</span><span class="label">Seconds</span></div></div>
 <div class="dates"><span class="pill">Starts: Nov 22, 2026</span><span class="pill">Ends: Nov 29, 2026</span></div>
-<div class="castle" aria-hidden="true">
-<svg viewBox="0 0 360 170" xmlns="http://www.w3.org/2000/svg">
-<defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#3953b8"/><stop offset="100%" stop-color="#1a2458"/></linearGradient></defs>
-<g fill="url(#g)"><rect x="42" y="126" width="276" height="28" rx="8"/><rect x="86" y="94" width="56" height="34" rx="7"/><rect x="218" y="94" width="56" height="34" rx="7"/><rect x="150" y="76" width="60" height="52" rx="8"/><rect x="95" y="66" width="38" height="28" rx="6"/><rect x="227" y="66" width="38" height="28" rx="6"/><rect x="164" y="46" width="32" height="30" rx="6"/><polygon points="114,38 103,66 125,66"/><polygon points="180,16 166,46 194,46"/><polygon points="246,38 235,66 257,66"/></g>
-</svg>
-</div>
+<div class="castle" aria-hidden="true"><svg viewBox="0 0 360 170" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#3953b8"/><stop offset="100%" stop-color="#1a2458"/></linearGradient></defs><g fill="url(#g)"><rect x="42" y="126" width="276" height="28" rx="8"/><rect x="86" y="94" width="56" height="34" rx="7"/><rect x="218" y="94" width="56" height="34" rx="7"/><rect x="150" y="76" width="60" height="52" rx="8"/><rect x="95" y="66" width="38" height="28" rx="6"/><rect x="227" y="66" width="38" height="28" rx="6"/><rect x="164" y="46" width="32" height="30" rx="6"/><polygon points="114,38 103,66 125,66"/><polygon points="180,16 166,46 194,46"/><polygon points="246,38 235,66 257,66"/></g></svg></div>
 <div class="status" id="status">The magic is getting closer…</div>
-<div class="actions"><button class="primary" id="shareBtn">Share Countdown</button><button class="secondary" id="copyBtn">Copy Link</button></div>
-<div class="audio-hint" id="audioHint">Music will start automatically when your browser allows it.</div>
-</section>
-<div class="note">Countdown is based on Eastern Time.</div>
-</main>
-<iframe id="ytPlayer" title="Vacation soundtrack" allow="autoplay; encrypted-media" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+<div class="audio-panel"><div class="now-label">Now Playing</div><div class="now-title" id="nowPlaying" aria-live="polite">Loading audio title…</div><div class="audio-actions"><button class="primary" id="switchAudioBtn" type="button" disabled>Switch Audio</button></div><div class="audio-note" id="audioNote">The player is hidden. If autoplay is blocked, tap anywhere once to start the music.</div></div>
+<div class="actions"><button class="primary" id="shareBtn" type="button">Share Countdown</button><button class="secondary" id="copyBtn" type="button">Copy Link</button></div>
+</section><div class="note">Countdown is based on Eastern Time.</div></main>
+<div id="ytPlayer" aria-hidden="true"></div>
+<script src="https://www.youtube.com/iframe_api"></script>
 <script>
 (function(){
-const start=new Date("2026-11-22T08:00:00-05:00");
-const end=new Date("2026-11-30T00:00:00-05:00");
-const d=document.getElementById("days"),h=document.getElementById("hours"),m=document.getElementById("minutes"),s=document.getElementById("seconds"),status=document.getElementById("status"),hint=document.getElementById("audioHint");
-function tick(){const now=new Date(),target=now<start?start:end,ms=Math.max(0,target-now),total=Math.floor(ms/1000);d.textContent=Math.floor(total/86400);h.textContent=String(Math.floor((total%86400)/3600)).padStart(2,"0");m.textContent=String(Math.floor((total%3600)/60)).padStart(2,"0");s.textContent=String(total%60).padStart(2,"0");if(now<start){status.textContent="The magic is getting closer…"}else if(now<end){status.textContent="✨ You’re on your Disney vacation! ✨"}else{d.textContent=h.textContent=m.textContent=s.textContent="0";status.textContent="The vacation may be over, but the memories stay magical. ✨"}}
-tick();setInterval(tick,1000);
-document.getElementById("shareBtn").onclick=async()=>{try{if(navigator.share){await navigator.share({title:"Countdown to Disney Vacation",text:"Our Disney vacation countdown — November 22–29, 2026!",url:location.href})}}catch(e){}};
-document.getElementById("copyBtn").onclick=async()=>{try{await navigator.clipboard.writeText(location.href)}catch(e){}};
-const hosted=location.protocol==="http:"||location.protocol==="https:";const frame=document.getElementById("ytPlayer");
-if(hosted){frame.src="https://www.youtube.com/embed/Rwri0GAzlgo?enablejsapi=1&playsinline=1&rel=0&autoplay=1&origin="+encodeURIComponent(location.origin);function sendYT(command){try{frame.contentWindow.postMessage(JSON.stringify({event:"command",func:command,args:[]}),"https://www.youtube.com")}catch(e){}}function tryPlay(){sendYT("playVideo");hint.textContent="♪ Vacation music enabled";window.removeEventListener("pointerdown",tryPlay);window.removeEventListener("touchstart",tryPlay);window.removeEventListener("keydown",tryPlay)}setTimeout(tryPlay,1200);window.addEventListener("pointerdown",tryPlay,{once:true});window.addEventListener("touchstart",tryPlay,{once:true});window.addEventListener("keydown",tryPlay,{once:true})}else{hint.textContent="For hidden background music, publish this countdown online first."}
+const start=new Date("2026-11-22T08:00:00-05:00"),end=new Date("2026-11-30T00:00:00-05:00");
+const d=document.getElementById("days"),h=document.getElementById("hours"),m=document.getElementById("minutes"),s=document.getElementById("seconds"),status=document.getElementById("status"),nowPlaying=document.getElementById("nowPlaying"),switchAudioBtn=document.getElementById("switchAudioBtn"),audioNote=document.getElementById("audioNote");
+function tick(){const now=new Date(),target=now<start?start:end,ms=Math.max(0,target-now),total=Math.floor(ms/1000);d.textContent=Math.floor(total/86400);h.textContent=String(Math.floor((total%86400)/3600)).padStart(2,"0");m.textContent=String(Math.floor((total%3600)/60)).padStart(2,"0");s.textContent=String(total%60).padStart(2,"0");if(now<start){status.textContent="The magic is getting closer…"}else if(now<end){status.textContent="✨ You’re on your Disney vacation! ✨"}else{d.textContent=h.textContent=m.textContent=s.textContent="0";status.textContent="The vacation may be over, but the memories stay magical. ✨"}}tick();setInterval(tick,1000);
+document.getElementById("shareBtn").addEventListener("click",async()=>{try{if(navigator.share){await navigator.share({title:"Countdown to Disney Vacation",text:"Our Disney vacation countdown — November 22–29, 2026!",url:location.href})}}catch(e){}});
+document.getElementById("copyBtn").addEventListener("click",async()=>{try{await navigator.clipboard.writeText(location.href);const btn=document.getElementById("copyBtn"),old=btn.textContent;btn.textContent="Copied!";setTimeout(()=>btn.textContent=old,1300)}catch(e){}});
+const tracks=[{id:"Rwri0GAzlgo"},{id:"7ajQ1bEsrhA"}];let currentTrack=0,player=null,playerReady=false,titlePoll=0;
+function updateVideoTitle(){if(!player||!player.getVideoData)return;const data=player.getVideoData();if(data&&data.title){nowPlaying.textContent=data.title;titlePoll=0;return}if(titlePoll<12){titlePoll++;setTimeout(updateVideoTitle,500)}else{nowPlaying.textContent="Vacation soundtrack"}}
+function startCurrentTrack(){if(!playerReady||!player)return;try{player.playVideo();audioNote.textContent="♪ Music enabled · tap Switch Audio to change tracks."}catch(e){}}
+switchAudioBtn.addEventListener("click",()=>{if(!playerReady||!player)return;currentTrack=(currentTrack+1)%tracks.length;titlePoll=0;nowPlaying.textContent="Loading audio title…";player.loadVideoById(tracks[currentTrack].id);setTimeout(updateVideoTitle,500)});
+window.onYouTubeIframeAPIReady=function(){if(!(location.protocol==="http:"||location.protocol==="https:")){nowPlaying.textContent="Publish online to load the soundtrack";audioNote.textContent="YouTube background playback requires the hosted version.";return}player=new YT.Player("ytPlayer",{videoId:tracks[currentTrack].id,playerVars:{autoplay:1,playsinline:1,rel:0,origin:location.origin},events:{onReady:function(){playerReady=true;switchAudioBtn.disabled=false;updateVideoTitle();try{player.playVideo()}catch(e){}},onStateChange:function(event){if(event.data===YT.PlayerState.PLAYING||event.data===YT.PlayerState.CUED||event.data===YT.PlayerState.PAUSED){updateVideoTitle()}},onError:function(){nowPlaying.textContent="Unable to load this YouTube audio"}}})};
+window.addEventListener("pointerdown",startCurrentTrack,{once:true});window.addEventListener("touchstart",startCurrentTrack,{once:true});window.addEventListener("keydown",startCurrentTrack,{once:true});
 })();
 </script>
 </body>
